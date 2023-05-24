@@ -1,0 +1,1051 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Orders List</title>-->
+<!--    &lt;!&ndash; Bootstrap 4 CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+<!--          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h1>Orders List</h1>-->
+<!--    <table class="table">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th scope="col">ID</th>-->
+<!--            <th scope="col">Car</th>-->
+<!--            <th scope="col">Client</th>-->
+<!--            <th scope="col">Start Rent</th>-->
+<!--            <th scope="col">End Rent</th>-->
+<!--            <th scope="col">Total Price</th>-->
+<!--            <th scope="col">Approved</th>-->
+<!--            <th scope="col">Damages</th>-->
+<!--            <th scope="col">Returned</th>-->
+<!--            <th scope="col">Paid</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="order : ${orders}">-->
+<!--            <td th:text="${order.getIdOrder()}"></td>-->
+<!--            <td th:text="${order.getCar().getBrand()} + ' ' + ${order.getCar().getModel()}"></td>-->
+<!--            <td th:text="${order.getClient().getFirstName()} + ' ' + ${order.getClient().getSurName()}"></td>-->
+<!--            <td th:text="${order.getStartRent()}"></td>-->
+<!--            <td th:text="${order.getEndRent()}"></td>-->
+<!--            <td th:text="${order.getTotalPrice()}"></td>-->
+<!--            <td th:text="${order.isApproved() ? 'Yes' : 'No'}"></td>-->
+<!--            <td th:text="${order.isDamages() ? 'Yes' : 'No'}"></td>-->
+<!--            <td th:text="${order.isReturned() ? 'Yes' : 'No'}"></td>-->
+<!--            <td th:text="${order.isPaid() ? 'Yes' : 'No'}"></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap 4 JS dependencies &ndash;&gt;-->
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"-->
+<!--        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNS3X2m"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
+<!--        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+<!--&gt;</script>-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Corona Admin</title>
+    <link rel="stylesheet" th:href="@{/admin/assets/vendors/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/assets/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/admin/assets/images/favicon.png}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+   <!-- <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+            <a class="sidebar-brand brand-logo" th:href="@{/admin/index.html}"><img
+                    th:src="@{/admin/assets/images/logo.svg}" alt="logo"/></a>
+            <a class="sidebar-brand brand-logo-mini" th:href="@{/admin/index.html}"><img
+                    th:src="@{/admin/assets/images/logo-mini.svg}" alt="logo"/></a>
+        </div>
+        <ul class="nav">
+            <li class="nav-item profile">
+                <div class="profile-desc">
+                    <div class="profile-pic">
+                        <div class="count-indicator">
+                            <img class="img-xs rounded-circle " th:src="@{/admin/assets/images/faces/face15.jpg}"
+                                 alt="">
+                            <span class="count bg-success"></span>
+                        </div>
+                        <div class="profile-name">
+                            <h5 class="mb-0 font-weight-normal">Henry Klein</h5>
+                            <span>Gold Member</span>
+                        </div>
+                    </div>
+                    <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
+                         aria-labelledby="profile-dropdown">
+                        <a href="#" class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-settings text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-onepassword  text-info"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-calendar-today text-success"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item nav-category">
+                <span class="nav-link">Navigation</span>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="../../index.html">
+              <span class="menu-icon">
+                <i class="mdi mdi-speedometer"></i>
+              </span>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                   aria-controls="ui-basic">
+              <span class="menu-icon">
+                <i class="mdi mdi-laptop"></i>
+              </span>
+                    <span class="menu-title">Basic UI Elements</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-basic">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/ui-features/buttons.html}">Buttons</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/ui-features/dropdowns.html}">Dropdowns</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/ui-features/typography.html}">Typography</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/admin/pages/forms/basic_elements.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-playlist-play"></i>
+              </span>
+                    <span class="menu-title">Form Elements</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/admin/pages/tables/basic-table.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-table-large"></i>
+              </span>
+                    <span class="menu-title">Tables</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/admin/pages/charts/chartjs.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-chart-bar"></i>
+              </span>
+                    <span class="menu-title">Charts</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/admin/pages/icons/mdi.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-contacts"></i>
+              </span>
+                    <span class="menu-title">Icons</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <span class="menu-icon">
+                <i class="mdi mdi-security"></i>
+              </span>
+                    <span class="menu-title">User Pages</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="auth">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/samples/blank-page.html}">
+                            Blank Page </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/samples/error-404.html}">
+                            404 </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/samples/error-500.html}">
+                            500 </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/samples/login.html}">
+                            Login </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/pages/samples/register.html}">
+                            Register </a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link"
+                   href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
+              <span class="menu-icon">
+                <i class="mdi mdi-file-document-box"></i>
+              </span>
+                    <span class="menu-title">Documentation</span>
+                </a>
+            </li>
+        </ul>
+    </nav>-->
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+            <a class="sidebar-brand brand-logo" href="index.html"><img th:src="@{admin/assets/images/logo.svg}"
+                                                                       alt="logo"/></a>
+            <a class="sidebar-brand brand-logo-mini" href="index.html"><img
+                    th:src="@{admin/assets/images/logo-mini.svg}" alt="logo"/></a>
+        </div>
+        <ul class="nav">
+            <li class="nav-item profile">
+                <div class="profile-desc">
+                    <div class="profile-pic">
+                        <div class="count-indicator">
+                            <img class="img-xs rounded-circle " th:src="@{/admin/assets/images/faces/AdminEvgeniy.jpg}"
+                                 alt="">
+                            <span class="count bg-success"></span>
+                        </div>
+                        <div class="profile-name">
+                            <h5 class="mb-0 font-weight-normal">Admin Evgeniy</h5>
+                            <span>Gold Member</span>
+                        </div>
+                    </div>
+                    <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
+                         aria-labelledby="profile-dropdown">
+                        <a href="#" class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-settings text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-onepassword  text-info"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-calendar-today text-success"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item nav-category">
+                <span class="nav-link">Navigation</span>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/admin-panel}">
+              <span class="menu-icon">
+                <i class="mdi mdi-speedometer"></i>
+              </span>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/admin/add_car}">
+              <span class="menu-icon">
+                <i class="mdi mdi-car"></i>
+              </span>
+                    <span class="menu-title">Add Car</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{/orders}">
+              <span class="menu-icon">
+                <i class="mdi mdi-library-books"></i>
+              </span>
+                    <span class="menu-title">Orders</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                   aria-controls="ui-basic">
+              <span class="menu-icon">
+                <i class="mdi mdi-laptop"></i>
+              </span>
+                    <span class="menu-title">Basic UI Elements</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-basic">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/ui-features/buttons.html}">Buttons</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/ui-features/dropdowns.html}">Dropdowns</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/ui-features/typography.html}">Typography</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{admin/pages/forms/basic_elements.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-playlist-play"></i>
+              </span>
+                    <span class="menu-title">Form Elements</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{admin/pages/tables/basic-table.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-table-large"></i>
+              </span>
+                    <span class="menu-title">Tables</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{admin/pages/charts/chartjs.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-chart-bar"></i>
+              </span>
+                    <span class="menu-title">Charts</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" th:href="@{admin/pages/icons/mdi.html}">
+              <span class="menu-icon">
+                <i class="mdi mdi-contacts"></i>
+              </span>
+                    <span class="menu-title">Icons</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <span class="menu-icon">
+                <i class="mdi mdi-security"></i>
+              </span>
+                    <span class="menu-title">User Pages</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="auth">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/samples/blank-page.html}"> Blank
+                            Page </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/samples/error-404.html}">
+                            404 </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/samples/error-500.html}">
+                            500 </a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/samples/login.html}"> Login </a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{admin/pages/samples/register.html}">
+                            Register </a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link"
+                   href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
+              <span class="menu-icon">
+                <i class="mdi mdi-file-document-box"></i>
+              </span>
+                    <span class="menu-title">Documentation</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_navbar.html -->
+        <!--<nav class="navbar p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo-mini" th:href="@{/admin/index.html}"><img
+                        th:src="@{/admin/assets/images/logo-mini.svg}" alt="logo"/></a>
+            </div>
+            <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <ul class="navbar-nav w-100">
+                    <li class="nav-item w-100">
+                        <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                            <input type="text" class="form-control" placeholder="Search products">
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item dropdown d-none d-lg-block">
+                        <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown"
+                           data-toggle="dropdown" aria-expanded="false" href="#">+ Create New Project</a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="createbuttonDropdown">
+                            <h6 class="p-3 mb-0">Projects</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-file-outline text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Software Development</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-web text-info"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">UI Development</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-layers text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Software Testing</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">See all projects</p>
+                        </div>
+                    </li>
+                    <li class="nav-item nav-settings d-none d-lg-block">
+                        <a class="nav-link" href="#">
+                            <i class="mdi mdi-view-grid"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown border-left">
+                        <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#"
+                           data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-email"></i>
+                            <span class="count bg-success"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="messageDropdown">
+                            <h6 class="p-3 mb-0">Messages</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img th:src="@{/admin/assets/images/faces/face4.jpg}" alt="image"
+                                         class="rounded-circle profile-pic">
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
+                                    <p class="text-muted mb-0"> 1 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img th:src="@{/admin/assets/images/faces/face2.jpg}" alt="image"
+                                         class="rounded-circle profile-pic">
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
+                                    <p class="text-muted mb-0"> 15 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img th:src="@{/admin/assets/images/faces/face3.jpg}" alt="image"
+                                         class="rounded-circle profile-pic">
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
+                                    <p class="text-muted mb-0"> 18 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">4 new messages</p>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown border-left">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+                           data-toggle="dropdown">
+                            <i class="mdi mdi-bell"></i>
+                            <span class="count bg-danger"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="notificationDropdown">
+                            <h6 class="p-3 mb-0">Notifications</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-calendar text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Event today</p>
+                                    <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event
+                                        today </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-settings text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Settings</p>
+                                    <p class="text-muted ellipsis mb-0"> Update dashboard </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-link-variant text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Launch Admin</p>
+                                    <p class="text-muted ellipsis mb-0"> New admin wow! </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">See all notifications</p>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                            <div class="navbar-profile">
+                                <img class="img-xs rounded-circle" th:src="@{/admin/assets/images/faces/face15.jpg}"
+                                     alt="">
+                                <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                                <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="profileDropdown">
+                            <h6 class="p-3 mb-0">Profile</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-settings text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Settings</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-logout text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Log out</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">Advanced settings</p>
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                        data-toggle="offcanvas">
+                    <span class="mdi mdi-format-line-spacing"></span>
+                </button>
+            </div>
+        </nav>-->
+        <nav class="navbar p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img
+                        th:src="@{admin/assets/images/logo-mini.svg}" alt="logo"/></a>
+            </div>
+            <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <ul class="navbar-nav w-100">
+                    <li class="nav-item w-100">
+                        <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                            <input type="text" class="form-control" placeholder="Search products">
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item dropdown d-none d-lg-block">
+                        <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown"
+                           data-toggle="dropdown" aria-expanded="false" href="#">+ Create New Project</a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="createbuttonDropdown">
+                            <h6 class="p-3 mb-0">Projects</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-file-outline text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Software Development</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-web text-info"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">UI Development</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-layers text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Software Testing</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">See all projects</p>
+                        </div>
+                    </li>
+                    <li class="nav-item nav-settings d-none d-lg-block">
+                        <a class="nav-link" href="#">
+                            <i class="mdi mdi-view-grid"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown border-left">
+                        <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#"
+                           data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-email"></i>
+                            <span class="count bg-success"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="messageDropdown">
+                            <h6 class="p-3 mb-0">Messages</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img th:src="@{admin/assets/images/faces/face4.jpg}" alt="image"
+                                         class="rounded-circle profile-pic">
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
+                                    <p class="text-muted mb-0"> 1 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img th:src="@{admin/assets/images/faces/face2.jpg}" alt="image"
+                                         class="rounded-circle profile-pic">
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
+                                    <p class="text-muted mb-0"> 15 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img th:src="@{admin/assets/images/faces/face3.jpg}" alt="image"
+                                         class="rounded-circle profile-pic">
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
+                                    <p class="text-muted mb-0"> 18 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">4 new messages</p>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown border-left">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+                           data-toggle="dropdown">
+                            <i class="mdi mdi-bell"></i>
+                            <span class="count bg-danger"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="notificationDropdown">
+                            <h6 class="p-3 mb-0">Notifications</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-calendar text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Event today</p>
+                                    <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event
+                                        today </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-settings text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Settings</p>
+                                    <p class="text-muted ellipsis mb-0"> Update dashboard </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-link-variant text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Launch Admin</p>
+                                    <p class="text-muted ellipsis mb-0"> New admin wow! </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">See all notifications</p>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                            <div class="navbar-profile">
+                                <img class="img-xs rounded-circle"
+                                     th:src="@{/admin/assets/images/faces/AdminEvgeniy.jpg}" alt="">
+                                <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin Evgeniy</p>
+                                <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                             aria-labelledby="profileDropdown">
+                            <h6 class="p-3 mb-0">Profile</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-settings text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Settings</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-logout text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject mb-1">Log out</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <p class="p-3 mb-0 text-center">Advanced settings</p>
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                        data-toggle="offcanvas">
+                    <span class="mdi mdi-format-line-spacing"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+
+                <h1>Orders List</h1>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Start Rent</th>
+                        <th scope="col">End Rent</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Approved</th>
+                        <th scope="col">Comment</th>
+<!--                        <th scope="col">Damages</th>-->
+<!--                        <th scope="col">Returned</th>-->
+                        <th scope="col">Paid</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.getIdOrder()}"></td>
+                        <td th:text="${order.getCar().getBrand()} + ' ' + ${order.getCar().getModel()}"></td>
+                        <td th:text="${order.getClient().getFirstName()} + ' ' + ${order.getClient().getSurName()}"></td>
+                        <td th:text="${#dates.format(order.getStartRent(),'dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(order.getEndRent(),'dd-MM-yyyy')}"></td>
+                        <td th:text="${order.getTotalPrice()}"></td>
+                        <td>
+                            <div>
+                                <!--oninput="this.form.submit()"-->
+                                <form th:action="@{/orders/updateApprovalStatus}" method="post">
+                                    <input type="hidden" name="idOrder" th:value="${order.getIdOrder()}"/>
+                                    <select id="mySelect" name="approvalStatus"
+                                            th:attr="data-order-id=${order.getIdOrder()}"
+                                            onchange="changeStatus(this)"
+                                            th:class="${order.getApprovalStatus() == T(com.example.rentacar.model.ApprovalStatus).WAITING_FOR_APPROVAL} ? 'badge badge-outline-warning' : (${order.getApprovalStatus() == T(com.example.rentacar.model.ApprovalStatus).APPROVED} ? 'badge badge-outline-success' : 'badge badge-outline-danger')"
+                                            style="background: black">
+                                        <option value="WAITING_FOR_APPROVAL" class="badge badge-outline-warning"
+                                                th:selected="${order.getApprovalStatus() == T(com.example.rentacar.model.ApprovalStatus).WAITING_FOR_APPROVAL}">
+                                            Pending
+                                        </option>
+                                        <option value="APPROVED" class="badge badge-outline-success"
+                                                th:selected="${order.getApprovalStatus() == T(com.example.rentacar.model.ApprovalStatus).APPROVED}">
+                                            Approved
+                                        </option>
+                                        <option value="REJECTED" class="badge badge-outline-danger"
+                                                th:selected="${order.getApprovalStatus() == T(com.example.rentacar.model.ApprovalStatus).REJECTED}">
+                                            <a href="#" onclick="openCommentDialog(this)"
+                                               th:attr="data-order=${order.getIdOrder()+ '|' + order.comment}">
+                                                Rejected
+                                            </a>
+                                        </option>
+                                    </select>
+                                </form>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span th:if="${order.getComment() == null || order.getComment() == ''}">
+                            <a href="#" onclick="openCommentDialog(this)"
+                               th:attr="data-order=${order.getIdOrder()+ '|' + order.comment}">
+                                <i class="mdi mdi-comment-plus-outline"></i>
+                            </a>
+                            </span>
+
+                            <div th:if="${order.getComment() != null}">
+                              <a href="#" onclick="openCommentDialog(this)"
+                                 th:attr="data-order=${order.getIdOrder()+ '|' + order.comment}">
+                                <div th:text="${order.getComment()}"></div>
+                            </a>
+                            </div>
+
+                            <!--                            <span th:if="${order.getComment() != null}">-->
+                            <!--                            <a href="#" th:attr="data-order=${order.getIdOrder() + '|' + order.comment}"-->
+                            <!--                               data-toggle="modal" data-target="#commentModal">-->
+                            <!--                                <div th:text="${order.getComment()}" style="word-wrap: break-word;"></div>-->
+                            <!--                            </a>-->
+                            <!--                            </span>-->
+
+                            <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="commentModalLabel" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="commentModalLabel">Редактирование
+                                                комментария</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                                    onclick="saveComment()">
+                                                <span aria-hidden="true">&times</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" id="commentOrderId">
+                                            <textarea class="form-control" id="commentText"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                                    onclick="saveComment()">
+                                                Cansel
+                                            </button>
+                                            <button type="button" class="btn btn-primary" onclick="saveComment()">
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+<!--                        <td th:if="${not order.isDamages()}">
+                            <div class="badge badge-success">No damage</div>
+                        </td>
+                        <td th:if="${order.isDamages()}">
+                            <div class="badge badge-warning">Damage</div>
+                        </td>
+
+
+
+                        <td th:if="${order.isReturned()}">
+                            <div class="badge badge-outline-info">Car Returned</div>
+                        </td>
+                        <td th:if="${not order.isReturned()}">
+                            <div class="badge badge-outline-secondary">Car Not Returned</div>
+                        </td>-->
+
+                        <td th:if="${order.isPaid()}">
+                            <div class="badge badge-info">Paid</div>
+                        </td>
+                        <td th:if="${not order.isPaid()}">
+                            <div class="badge badge-danger">Not Paid</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                            href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+</div>
+<script>
+    function changeStatus(select) {
+        var orderId = select.dataset.orderId;
+        var newStatus = select.value;
+        console.log("id:", orderId);
+        console.log("status:", newStatus);
+        $.ajax({
+            url: '/orders/' + orderId + '/status',
+            method: 'POST',
+            data: {status: newStatus},
+            success: function () {
+                if (newStatus === "REJECTED") {
+                    $('#commentOrderId').val(parseInt(orderId));
+                    $('#commentModal').modal('show');
+                } else {
+                    location.reload();
+                }
+                // Перезагрузка страницы после изменения статуса
+            }
+        });
+
+    }
+</script>
+
+<script>
+
+
+    function saveComment() {
+        var orderId = $('#commentOrderId').val();
+        var comment = $('#commentText').val();
+        console.log("id save:", orderId);
+        console.log("comment save:", comment);
+        $.post('/orders/' + orderId + '/comment', {comment: comment})
+            .done(function () {
+                // обновить страницу
+                location.reload();
+            })
+            .fail(function () {
+                alert('Не удалось сохранить комментарий.');
+            });
+    }
+
+    function openCommentDialog(data) {
+        var order = data.dataset.order.toString();
+        const orderString = order.split("|")
+        var orderId = orderString[0];
+        var comment = orderString[1];
+        console.log("order:", order);
+        console.log("order:", typeof order);
+        console.log("order:", orderString);
+        console.log("orderId:", orderId);
+        console.log("comment:", comment);
+        $('#commentOrderId').val(parseInt(orderId));
+        $('#commentText').val(comment);
+        $('#commentModal').modal('show');
+    }
+
+</script>
+
+
+<script th:src="@{/admin/assets/vendors/js/vendor.bundle.base.js}"></script>
+<script th:src="@{/admin/assets/js/off-canvas.js}"></script>
+<script th:src="@{/admin/assets/js/hoverable-collapse.js}"></script>
+<script th:src="@{/admin/assets/js/misc.js}"></script>
+<script th:src="@{/admin/assets/js/settings.js}"></script>
+<script th:src="@{/admin/assets/js/todolist.js}"></script>
+<script th:src="@{/admin/assets/js/approve.js}"></script>
+</body>
+</html>

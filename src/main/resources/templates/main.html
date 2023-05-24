@@ -1,0 +1,44 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Main</title>
+
+    <style>
+        img {
+            margin: 0 auto;
+            display: block;
+            margin-top: 20%;
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+<!--<a href="https://colorlib.com/wp/templates/">-->
+<!--    <img src="https://colorlib.com/wp/wp-content/uploads/sites/2/colorlib-push-logo.png" alt="Colorlib logo">-->
+<!--</a>-->
+
+<h1 style="text-align:center;">Thank you for your order!</h1>
+
+
+<p style="text-align:center; color:green;" th:if="${order.isPaid()}" >
+    <strong>Payment was successful.</strong>
+</p>
+<br>
+<p style="text-align:center; color:red;" th:if="${not order.isPaid()}">
+    <strong>Payment failed or the amount is insufficient.</strong>
+</p>
+
+<p style="text-align:center;" th:if="${not order.isPaid()}">
+    <strong>Back to
+        <a th:href="@{/payment/{idOrder}(idOrder = ${order.getIdOrder()})}">payment</a></strong>.
+</p>
+
+
+<p style="text-align:center;">Go to
+    <strong><a th:href="@{/}">cars</a></strong>.
+</p>
+</body>
+</html>
