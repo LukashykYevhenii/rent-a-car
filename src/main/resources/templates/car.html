@@ -44,6 +44,7 @@
                 width: 100%;
             }
         }
+
         .sidebar .active {
             border-radius: 5px;
             box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
@@ -65,7 +66,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-        <a class="navbar-brand" href="admin/index-first.html">Car<span>Book</span></a>
+        <a class="navbar-brand" th:href="@{/}">Car<span>Book</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> Menu
@@ -73,11 +74,11 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a href="admin/index-first.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a th:href="@{/}" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
                 <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-                <li class="nav-item active"><a href="car.html" class="nav-link">Cars</a></li>
+                <li class="nav-item active"><a th:href="@{/}" class="nav-link">Cars</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="payment.html" class="nav-link">Contact</a></li>
             </ul>
@@ -185,43 +186,101 @@
 
 <!---->
 <section class="ftco-section bg-light" data-stellar-background-ratio="0.5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4" th:each="car:${cars}">
-                <div class="car-wrap rounded ftco-animate">
-                    <div class="img rounded d-flex align-items-end"
-                         th:style="'background-image: url('+ @{/image/{idCar}(idCar=${car.getIdCar()})} + ');'"></div>
-                    <div class="text">
-                        <h2 class="mb-0"><a href="car-single.html" th:text="${car.getBrand()}"></a></h2>
-                        <div class="d-flex mb-3">
-                            <span class="cat" th:text="${car.getModel()}"></span>
-                            <p class="price ml-auto" th:text="${car.getRentalPrice()}"><span>/day</span></p>
-                        </div>
-                        <p class="d-flex mb-0 d-block">
-                            <a th:href="@{/rent/{id}(id=${car.getIdCar()})}" class="btn btn-primary py-2 mr-1">Rent
-                                now</a>
-                            <a class="btn btn-secondary py-2 ml-1" th:href="@{/car/{id}(id=${car.getIdCar()})}">Car
-                                info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-        <div class="row mt-5">
-            <div class="col text-center">
-                <div th:if="${carPages.totalPages>1}" class="block-27">
-                    <ul>
-                        <li th:if="${carPages.number > 1}">
-                            <a th:href="@{/(page=${carPages.number})}">&lt;</a>
-                        </li>
-                        <li th:each="pageNumber : ${#numbers.sequence(1, carPages.totalPages)}" th:class="${pageNumber - 1 == carPages.number ? 'active' : ''}">
-                            <a th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}"></a>
-                        </li>
-                        <li th:if="${carPages.number < carPages.totalPages}">
-                            <a th:href="@{/(page=${carPages.number + 1})}">&gt;</a>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="categories">
+                <h2>Categories</h2>
+<!--                th:action="@{/car/category}"-->
+                <form th:action="@{/car/category}" class="form-group" id="categoryForm">
+                    <ul class="list-group">
+                        <li th:each="category : ${categories}" class="list-group-item">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" th:name="selectedCategories" th:value="${category.name}"
+                                       class="custom-control-input category-item" th:id="${category.name}"
+                                       th:checked="${selectedCategories!=null && selectedCategories.contains(category)}">
+                                <label class="custom-control-label" th:for="${category.name}">
+                                    <img th:src="${category.image}" width="80" height="43"
+                                         th:alt="${category.name}"></label>
+                                <span th:text="${category.name}"></span>
+                            </div>
                         </li>
                     </ul>
+                </form>
+            </div>
+        </div>
+
+        <!--        <button type="submit" class="btn btn-primary">Choice category</button>-->
+
+        <script>
+            // Получение формы и чекбоксов
+            var categoryForm = document.getElementById('categoryForm');
+            var categoryCheckboxes = document.getElementsByClassName('category-item');
+
+            // Добавление обработчика события на каждый чекбокс
+            for (var i = 0; i < categoryCheckboxes.length; i++) {
+                categoryCheckboxes[i].addEventListener('change', function () {
+                    var scrollPosition = window.pageYOffset; // Сохранение текущей позиции прокрутки
+                    console.log("first script = " + scrollPosition);
+                    //categoryForm.action = '/car/category?pagePosition=' + scrollPosition; // Добавление параметра запроса
+                    categoryForm.submit(); // Сабмит формы при изменении чекбокса
+                    // // Установка обработчика события после отправки формы
+                    // window.addEventListener('load', function () {
+                    //     window.scrollTo(0, scrollPosition); // Возврат к сохраненной позиции прокрутки
+                    // });
+                });
+            }
+        </script>
+
+
+        <script>
+            // Восстановление положения страницы после перенаправления
+            var pagePosition = [[${pagePosition}]];
+            console.log("script2 = "+pagePosition)
+            if (pagePosition) {
+                window.scrollTo(0, pagePosition);
+            }
+        </script>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4" th:each="car:${cars}">
+                    <div class="car-wrap rounded ftco-animate">
+                        <div class="img rounded d-flex align-items-end"
+                             th:style="'background-image: url('+ @{/image/{idCar}(idCar=${car.getIdCar()})} + ');'"></div>
+                        <div class="text">
+                            <h2 class="mb-0"><a href="car-single.html" th:text="${car.getBrand()}"></a></h2>
+                            <div class="d-flex mb-3">
+                                <span class="cat" th:text="${car.getModel()}"></span>
+                                <p class="price ml-auto" th:text="${car.getRentalPrice()}"><span>/day</span></p>
+                            </div>
+                            <p class="d-flex mb-0 d-block">
+                                <a th:href="@{/rent/{id}(id=${car.getIdCar()})}" class="btn btn-primary py-2 mr-1">Rent
+                                    now</a>
+                                <a class="btn btn-secondary py-2 ml-1" th:href="@{/car/{id}(id=${car.getIdCar()})}">Car
+                                    info</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-5">
+                <div class="col text-center">
+                    <div th:if="${carPages.totalPages>1}" class="block-27">
+                        <ul>
+                            <li th:if="${carPages.number > 1}">
+                                <a th:href="@{/(page=${carPages.number})}">&lt;</a>
+                            </li>
+                            <li th:each="pageNumber : ${#numbers.sequence(1, carPages.totalPages)}"
+                                th:class="${pageNumber - 1 == carPages.number ? 'active' : ''}">
+                                <a th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                            </li>
+                            <li th:if="${carPages.number < carPages.totalPages}">
+                                <a th:href="@{/(page=${carPages.number + 1})}">&gt;</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,10 +4,7 @@ package com.example.rentacar.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Component
 @Entity
 public class Car {
@@ -34,4 +32,7 @@ public class Car {
   @NotEmpty(message = "Field is empty. Please enter register number")
   private String regNumber;
   private Double rentalPrice;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id", nullable = false)
+  private Category category;
 }
